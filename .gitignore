@@ -4,4 +4,14 @@
 # Ignore Gradle build output directory
 build
 
+# Ignore Emacs editor files
+*~
+
+# Ignore Emacs backup files
+\#*\#
+*\#
+
+# Java build artifacts
+target/
+build/
 
