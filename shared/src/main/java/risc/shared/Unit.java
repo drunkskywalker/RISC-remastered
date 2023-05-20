@@ -1,7 +1,7 @@
 package risc.shared;
 
-public interface Unit {
+public interface Unit extends Modifiable {
   public PlayerInfo getOwner();
-  public UnitType getType();
+  public UnitInfo getInfo();
   public boolean visibleTo(PlayerInfo target);
 }

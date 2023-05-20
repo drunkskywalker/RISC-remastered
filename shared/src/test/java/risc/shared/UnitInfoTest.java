@@ -4,13 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-public class UnitTypeTest {
+public class UnitInfoTest {
   @Test
   public void test() {
-    UnitType a = UnitType.getUnitType("Siege Tower");
+    UnitInfo a = UnitInfo.getUnitInfo("Siege Tower");
     assertThrows(IllegalArgumentException.class,
-                 () -> UnitType.getUnitType("Siege Artillery"));
-    UnitType b = UnitType.getUnitType("Siege Tower");
+                 () -> UnitInfo.getUnitInfo("Siege Artillery"));
+    UnitInfo b = UnitInfo.getUnitInfo("Siege Tower");
     assertTrue(a == b);
   }
 }

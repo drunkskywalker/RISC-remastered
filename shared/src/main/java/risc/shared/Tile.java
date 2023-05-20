@@ -2,25 +2,13 @@ package risc.shared;
 
 import java.util.ArrayList;
 import java.util.List;
+import risc.shared.Enums.*;
 
 /**
  * A class to represent a tile of land.
  */
 
-public class Tile {  //implements Modifiable {
-  enum Terrain {
-    PLAIN,
-    HILLS,
-    MOUNTAIN,
-    TUNDRA,
-    FOREST,
-    TAIGA,
-    SWAMP,
-    URBAN,
-    DESERT;
-  }
-  ;
-
+public class Tile implements Modifiable {
   public final int id;
   public final String name;
 
@@ -33,7 +21,7 @@ public class Tile {  //implements Modifiable {
   private double turmoil = 0;
   private int cloakTurns = 0;
   private int scoratchedEarthTurns = 0;
-  private int fortificationLevel;
+  private int fortificationLevel = 0;
 
   private Terrain terrain;
   private ArrayList<Modifier> modifiers = new ArrayList<>();
@@ -65,10 +53,13 @@ public class Tile {  //implements Modifiable {
     }
   }
 
-  /**assigns tile to the given owner.
-   * 
+  /**adds a unit to the tile.
+   * @param u is the unit to add.
+   */
+  public void addUnit(Unit u) { this.units.add(u); }
+
+  /**assigns tile to the given owner. 
    * @param owner is the new owner of the Tile object.
-   *
    */
   public void setOwner(PlayerInfo owner) { this.ownerInfo = owner; }
 
@@ -78,50 +69,82 @@ public class Tile {  //implements Modifiable {
    */
   public boolean belongsTo(PlayerInfo target) { return this.ownerInfo.equals(target); }
 
-  /**gets the food production of the tile.
-   * @return the food production after modifiers.
+  /**gets the production with corresponding type of resource.
+   * @param resource is the resource to get.
+   * @return the corresponding production after modifiers of Tile and unit.
+   *@throws IllegalArgumentException if resource is not FOOD, TECH, or MAGIC.
    */
+  public double getProduction(Target resource) {
+    double result;
+    List<Modifier> ms = getModifiers(resource, Scale.TILE);
+    switch (resource) {
+      case FOOD:
 
-  public double getFoodProduction() { return this.foodProduction; }
+        result = this.foodProduction;
+        break;
+      case TECH:
+        result = this.techProduction;
+        break;
+      case MAGIC:
+        result = this.magicProduction;
+        break;
 
-  /**gets the tech production of the tile.
-   * 
-   * @return the tech production after modifiers.
-   *
-   */
+      default:
+        throw new IllegalArgumentException(
+            "Illegal Tile getProduction: expecting resource to be FOOD, TECH or MAGIC, but got " +
+            resource);
+    }
 
-  public double getTechProduction() { return this.techProduction; }
+    return Modifiable.applyModifiers(result, ms);
+  }
+  // Modifiable methods
 
-  /**gets the magic production of the tile.
-   * 
-   * @return the magic production after modifiers.
-   *
-   */
-
-  public double getMagicProduction() { return this.magicProduction; }
-
-  /**adds a new modifier to the tile.
+  /**adds a new modifier.
    * 
    * @param m is the modifier to add.
    *
    */
-  public void addModifier(Modifier m) { this.modifiers.add(m); }
-
-  /*
   @Override
-  public Tile modify(List<Modifier> modifiers) {
-    List<Modifier> numericModifiers = new ArrayList<>();
-    List<Modifier> gameRuleModifiers = new ArrayList<>();
-    for (Modifier m : modifiers) {
-      if (m instanceof NumericModifier) {
-        numericModifiers.add(m);
-      }
-      if (m instanceof GameRuleModifier) {
-        gameRuleModifiers.add(m);
+  public void addModifier(Modifier m) {
+    this.modifiers.add(m);
+  }
+
+  /**recusively gives modifiers with given target type.
+   * 
+   * @param target is the type of attribute to get.
+   * @param scale is the scale of the modifier.
+   * @return a list of modifiers of that type.
+   *
+   */
+  @Override
+  public List<Modifier> getModifiers(Target target, Scale scale) {
+    List<Modifier> temp = getAllModifiersRecursive();
+    List<Modifier> result = new ArrayList<>();
+    for (Modifier m : temp) {
+      if (m.getTarget().equals(target) && m.getScale().equals(scale)) {
+        result.add(m);
       }
     }
+    return result;
   }
-  */
+  /**gives all modifiers.
+   * @return modifiers.
+   */
+  @Override
+  public List<Modifier> getAllModifiers() {
+    return modifiers;
+  }
 
-  private void modifyNumeric(Tile toModify, List<Modifier> modifiers) {}
+  /**gives all modifiers and all modifiers of the field which contains a modifiable object.
+   * @return
+   *
+   */
+  @Override
+  public List<Modifier> getAllModifiersRecursive() {
+    List<Modifier> result = modifiers;
+    for (Unit u : units) {
+      result.addAll(u.getAllModifiersRecursive());
+    }
+    return result;
+  }
 }

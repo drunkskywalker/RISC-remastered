@@ -4,43 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import risc.shared.Enums.*;
 
-/**
- * an abstract class of Unit.
- */
+public class PlayerStatus implements Status {
+  private PlayerInfo playerInfo;
 
-public class GenericUnit implements Unit {
-  public PlayerInfo owner;
-  public UnitInfo info;
   private List<Modifier> modifiers = new ArrayList<>();
+  private Map map;
 
-  public GenericUnit(PlayerInfo owner) {
-    this.owner = owner;
-    this.info = UnitInfo.getUnitInfo("Citizen Militia");
-  }
+  private double foodAccumulation;
+  private double techAccumulation;
+  private double magicAccumulation;
+  private int techResearchLevel;
+  private double techResearchProgress;
+  private int magicResearchLevel;
+  private double magicResearchProgress;
 
-  /**gives the unit owner.
-   * @return the owner's PlayerInfo.
-   */
+  public double getProduction(Target resource) {
+    double result = map.getProduction(playerInfo, resource);
 
-  @Override
-  public PlayerInfo getOwner() {
-    return this.owner;
-  }
-
-  /**gives the unit info.
-   * @return the unit's UnitInfo.
-   */
-  @Override
-  public UnitInfo getInfo() {
-    return this.info;
-  }
-
-  /**determines if this unit is visible to a player.
-   * @return true.
-   */
-  @Override
-  public boolean visibleTo(PlayerInfo target) {
-    return true;
+    List<Modifier> modifiers = getModifiers(resource, Scale.MAP);
+    result = Modifiable.applyModifiers(result, modifiers);
+    return result;
   }
 
   // Modifiable methods
@@ -88,6 +71,10 @@ public class GenericUnit implements Unit {
    */
   @Override
   public List<Modifier> getAllModifiersRecursive() {
-    return getAllModifiers();
+    List<Modifier> result = modifiers;
+
+    result.addAll(map.getAllModifiersRecursive());
+
+    return result;
   }
 }

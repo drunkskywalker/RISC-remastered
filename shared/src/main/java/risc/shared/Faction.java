@@ -2,46 +2,24 @@ package risc.shared;
 
 import java.util.ArrayList;
 import java.util.List;
-import risc.shared.Enums.*;
+import risc.shared.Enums.Scale;
+import risc.shared.Enums.Target;
 
-/**
- * an abstract class of Unit.
- */
+public class Faction implements Modifiable {
+  private ArrayList<Modifier> modifiers = new ArrayList<>();
+  private Ruler ruler;
 
-public class GenericUnit implements Unit {
-  public PlayerInfo owner;
-  public UnitInfo info;
-  private List<Modifier> modifiers = new ArrayList<>();
+  public final String name;
 
-  public GenericUnit(PlayerInfo owner) {
-    this.owner = owner;
-    this.info = UnitInfo.getUnitInfo("Citizen Militia");
+  public Faction(String name, Ruler ruler) {
+    this.name = name;
+    this.ruler = ruler;
   }
 
-  /**gives the unit owner.
-   * @return the owner's PlayerInfo.
+  /**gives the ruler of this faction.
+   * @return ruler of the faction.
    */
-
-  @Override
-  public PlayerInfo getOwner() {
-    return this.owner;
-  }
-
-  /**gives the unit info.
-   * @return the unit's UnitInfo.
-   */
-  @Override
-  public UnitInfo getInfo() {
-    return this.info;
-  }
-
-  /**determines if this unit is visible to a player.
-   * @return true.
-   */
-  @Override
-  public boolean visibleTo(PlayerInfo target) {
-    return true;
-  }
+  public Ruler getRuler() { return this.ruler; }
 
   // Modifiable methods
 
@@ -88,6 +66,9 @@ public class GenericUnit implements Unit {
    */
   @Override
   public List<Modifier> getAllModifiersRecursive() {
-    return getAllModifiers();
+    List<Modifier> result = modifiers;
+    result.addAll(ruler.getAllModifiersRecursive());
+
+    return result;
   }
 }

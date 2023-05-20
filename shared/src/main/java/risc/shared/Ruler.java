@@ -4,44 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import risc.shared.Enums.*;
 
-/**
- * an abstract class of Unit.
- */
+public class Ruler implements Modifiable {
+  public final String name;
+  private ArrayList<Modifier> modifiers = new ArrayList<>();
 
-public class GenericUnit implements Unit {
-  public PlayerInfo owner;
-  public UnitInfo info;
-  private List<Modifier> modifiers = new ArrayList<>();
-
-  public GenericUnit(PlayerInfo owner) {
-    this.owner = owner;
-    this.info = UnitInfo.getUnitInfo("Citizen Militia");
-  }
-
-  /**gives the unit owner.
-   * @return the owner's PlayerInfo.
-   */
-
-  @Override
-  public PlayerInfo getOwner() {
-    return this.owner;
-  }
-
-  /**gives the unit info.
-   * @return the unit's UnitInfo.
-   */
-  @Override
-  public UnitInfo getInfo() {
-    return this.info;
-  }
-
-  /**determines if this unit is visible to a player.
-   * @return true.
-   */
-  @Override
-  public boolean visibleTo(PlayerInfo target) {
-    return true;
-  }
+  public Ruler(String name) { this.name = name; }
 
   // Modifiable methods
 
@@ -88,6 +55,6 @@ public class GenericUnit implements Unit {
    */
   @Override
   public List<Modifier> getAllModifiersRecursive() {
-    return getAllModifiers();
+    return modifiers;
   }
 }
