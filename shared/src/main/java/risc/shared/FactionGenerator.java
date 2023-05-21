@@ -1,20 +1,8 @@
 package risc.shared;
 
 import java.util.HashMap;
-
+import risc.shared.Enums.*;
 public class FactionGenerator {
-  public enum RulerCode {
-    A0,
-    A1,
-    B0,
-    B1,
-    C0,
-    C1,
-    D0,
-    D1,
-    M,
-  }
-  ;
   private static HashMap<RulerCode, Faction> factionMap = new HashMap<>();
   private static Faction makeFaction(RulerCode rc) {
     //TODO: add modifiers

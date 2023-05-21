@@ -1,25 +1,9 @@
 package risc.shared;
 
 import java.util.List;
+import risc.shared.Enums.*;
 
 public interface Map extends Modifiable {
-  public enum Visibility {
-    FULL,
-    PARTIAL,
-    OUTDATED,
-    NONE,
-  }
-  ;
-  public enum Path {
-    DIRT_PATH,
-    COBBLE_PATH,
-    MACADAM_PATH,
-    RAILWAY,
-    PONTOON_BRIDGE,
-    STONE_ARCH_BRIDGE,
-    RAILWAY_BRIDGE,
-  }
-  ;
   public void assignTo(int tileId, PlayerInfo owner);
 
   public double getProduction(PlayerInfo owner, Enums.Target resource);

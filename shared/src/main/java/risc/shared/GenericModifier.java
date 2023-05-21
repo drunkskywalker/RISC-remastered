@@ -7,7 +7,7 @@ public class GenericModifier implements Modifier {
   protected Enums.Target target;
   protected Enums.Scale scale;
   protected Enums.Time time;
-  protected int id;
+  protected long id;
   protected int rounds;
   protected String description;
   protected boolean isPercentage;
@@ -31,7 +31,7 @@ public class GenericModifier implements Modifier {
                          Enums.Time time,
                          boolean isPercentage,
                          int rounds,
-                         int id) {
+                         long id) {
     /*
     if (target != Enums.Target.FOOD && target != Enums.Target.TECH &&
         target != Enums.Target.MAGIC) {
@@ -69,7 +69,7 @@ public class GenericModifier implements Modifier {
                          Enums.Scale scale,
                          Enums.Time time,
                          boolean isPercentage,
-                         int id) {
+                         long id) {
     this(value, target, scale, time, isPercentage, -1, id);
   }
 

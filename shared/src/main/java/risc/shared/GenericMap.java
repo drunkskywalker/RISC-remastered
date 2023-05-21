@@ -5,12 +5,16 @@ import java.util.List;
 import risc.shared.Enums.*;
 
 public abstract class GenericMap implements Map {
-  protected ArrayList<Tile> tiles = new ArrayList<>();
-  protected double[][] distanceMatrix = new double[100][100];
-  protected Path[][] pathMatrix = new Path[100][100];
+  protected List<Tile> tiles;
+  protected double[][] distanceMatrix;
+  protected Path[][] pathMatrix;
   protected List<Modifier> modifiers = new ArrayList<>();  // stores map modifiers
 
-  //private double applyModifiers(double input, List<Modifier> modifiers) { return input; }
+  public GenericMap(List<Tile> tiles, double[][] distances, Path[][] paths) {
+    this.tiles = tiles;
+    this.distanceMatrix = distances;
+    this.pathMatrix = paths;
+  }
 
   /**gives the tile with specified id.
    * @param tileId is the tile id.

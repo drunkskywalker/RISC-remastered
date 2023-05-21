@@ -1,6 +1,37 @@
 package risc.shared;
 
 public class Enums {
+  public enum Visibility {
+    FULL,
+    PARTIAL,
+    OUTDATED,
+    NONE,
+  }
+  ;
+  public enum Path {
+    DIRT_PATH,
+    COBBLE_PATH,
+    MACADAM_PATH,
+    RAILWAY,
+    PONTOON_BRIDGE,
+    STONE_ARCH_BRIDGE,
+    RAILWAY_BRIDGE,
+  }
+  ;
+
+  public enum RulerCode {
+    A0,
+    A1,
+    B0,
+    B1,
+    C0,
+    C1,
+    D0,
+    D1,
+    M,
+  }
+  ;
+
   public enum Target {
     FOOD,
     TECH,
